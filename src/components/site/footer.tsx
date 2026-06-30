@@ -1,4 +1,5 @@
-import { Instagram, MapPin, Phone, Sparkles } from "lucide-react";
+import { Instagram, MapPin, Navigation, Phone, Sparkles } from "lucide-react";
+import { BUSINESS, getGoogleMapsUrl, getWazeUrl } from "@/lib/business";
 
 export function Footer() {
   return (
@@ -14,14 +15,32 @@ export function Footer() {
 
         <div className="space-y-2 text-sm text-ink/70">
           <p className="flex items-center gap-2">
-            <MapPin className="h-4 w-4 text-gold-dark" /> רחוב הדוגמה 12, תל אביב
+            <MapPin className="h-4 w-4 text-gold-dark" /> {BUSINESS.address}
           </p>
           <p className="flex items-center gap-2">
-            <Phone className="h-4 w-4 text-gold-dark" /> 050-0000000
+            <Phone className="h-4 w-4 text-gold-dark" /> {BUSINESS.phone}
           </p>
           <p className="flex items-center gap-2">
-            <Instagram className="h-4 w-4 text-gold-dark" /> @mital.nails
+            <Instagram className="h-4 w-4 text-gold-dark" /> {BUSINESS.instagram}
           </p>
+          <div className="flex flex-wrap gap-3 pt-1">
+            <a
+              href={getWazeUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs font-medium text-primary hover:underline"
+            >
+              <Navigation className="h-3.5 w-3.5" /> ניווט ב-Waze
+            </a>
+            <a
+              href={getGoogleMapsUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs font-medium text-primary hover:underline"
+            >
+              <Navigation className="h-3.5 w-3.5" /> ניווט ב-Google Maps
+            </a>
+          </div>
         </div>
 
         <div className="text-sm text-ink/70">
