@@ -50,3 +50,22 @@ export const serviceSchema = z.object({
 });
 
 export type ServiceInput = z.infer<typeof serviceSchema>;
+
+const timeRegex = /^([01]\d|2[0-3]):[0-5]\d$/;
+
+export const businessHoursDaySchema = z
+  .object({
+    weekday: z.number().int().min(0).max(6),
+    openTime: z.string().regex(timeRegex, "שעה לא תקינה"),
+    closeTime: z.string().regex(timeRegex, "שעה לא תקינה"),
+    isClosed: z.boolean(),
+  })
+  .refine((data) => data.isClosed || data.closeTime > data.openTime, {
+    message: "שעת הסגירה חייבת להיות אחרי שעת הפתיחה",
+    path: ["closeTime"],
+  });
+
+export const businessHoursSchema = z.array(businessHoursDaySchema).length(7);
+
+export type BusinessHoursDayInput = z.infer<typeof businessHoursDaySchema>;
+export type BusinessHoursInput = z.infer<typeof businessHoursSchema>;
