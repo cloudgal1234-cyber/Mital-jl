@@ -2,11 +2,12 @@ import Link from "next/link";
 import { Sparkles } from "lucide-react";
 import { BookingWizard } from "@/components/booking/booking-wizard";
 import { getActiveServices } from "@/lib/actions/services";
+import { getBusinessInfo } from "@/lib/actions/business";
 
 export const dynamic = "force-dynamic";
 
 export default async function BookingPage() {
-  const services = await getActiveServices();
+  const [services, businessInfo] = await Promise.all([getActiveServices(), getBusinessInfo()]);
 
   return (
     <main className="min-h-screen bg-pearl-100 py-16">
@@ -15,7 +16,7 @@ export default async function BookingPage() {
           <Sparkles className="h-5 w-5 text-gold" />
           מיטל <span className="text-primary">ג&apos;ל</span>
         </Link>
-        <BookingWizard services={services} />
+        <BookingWizard services={services} businessInfo={businessInfo} />
       </div>
     </main>
   );

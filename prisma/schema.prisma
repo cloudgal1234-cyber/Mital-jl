@@ -109,3 +109,29 @@ model BusinessHours {
   closeTime String // "19:00"
   isClosed  Boolean @default(false)
 }
+
+/// Single row (id always "singleton") holding the editable business contact
+/// details shown across the public site.
+model BusinessInfo {
+  id        String   @id
+  name      String
+  address   String
+  phone     String
+  instagram String?
+  facebook  String?
+  whatsapp  String?
+  about     String?
+  updatedAt DateTime @updatedAt
+}
+
+model GalleryImage {
+  id        String   @id @default(cuid())
+  title     String?
+  /// Base64 data URL — images are stored directly in the DB so the site
+  /// works without provisioning separate file/object storage.
+  dataUrl   String   @db.Text
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([sortOrder])
+}

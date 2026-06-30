@@ -29,7 +29,9 @@ const slideVariants = {
   exit: (direction: number) => ({ x: direction > 0 ? -48 : 48, opacity: 0 }),
 };
 
-export function BookingWizard({ services }: { services: Service[] }) {
+type BusinessInfo = { name: string; address: string };
+
+export function BookingWizard({ services, businessInfo }: { services: Service[]; businessInfo: BusinessInfo }) {
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState(1);
   const [state, setState] = useState<WizardState>({ service: null, date: null, time: null, client: null });
@@ -129,6 +131,7 @@ export function BookingWizard({ services }: { services: Service[] }) {
                 time={state.time}
                 isPending={isPending}
                 result={result}
+                businessInfo={businessInfo}
                 onRestart={reset}
                 onBackToDateTime={() => goTo(1)}
               />

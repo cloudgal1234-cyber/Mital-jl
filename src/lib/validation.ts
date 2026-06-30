@@ -69,3 +69,26 @@ export const businessHoursSchema = z.array(businessHoursDaySchema).length(7);
 
 export type BusinessHoursDayInput = z.infer<typeof businessHoursDaySchema>;
 export type BusinessHoursInput = z.infer<typeof businessHoursSchema>;
+
+export const businessInfoSchema = z.object({
+  name: z.string().trim().min(2, "נא להזין שם עסק").max(80, "השם ארוך מדי"),
+  address: z.string().trim().min(2, "נא להזין כתובת").max(200, "הכתובת ארוכה מדי"),
+  phone: z.string().trim().min(2, "נא להזין טלפון").max(30, "מספר טלפון ארוך מדי"),
+  instagram: z.string().trim().max(60, "ארוך מדי").optional(),
+  facebook: z.string().trim().max(60, "ארוך מדי").optional(),
+  whatsapp: z.string().trim().max(30, "ארוך מדי").optional(),
+  about: z.string().trim().max(500, "ארוך מדי").optional(),
+});
+
+export type BusinessInfoInput = z.infer<typeof businessInfoSchema>;
+
+export const galleryImageSchema = z.object({
+  title: z.string().trim().max(80, "כותרת ארוכה מדי").optional(),
+  dataUrl: z
+    .string()
+    .trim()
+    .startsWith("data:image/", "פורמט תמונה לא נתמך")
+    .max(3_000_000, "התמונה גדולה מדי"),
+});
+
+export type GalleryImageInput = z.infer<typeof galleryImageSchema>;

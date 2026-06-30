@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CalendarDays, Clock, LogOut, Scissors, Sparkles, Users } from "lucide-react";
+import { Building2, CalendarDays, Clock, Images, LogOut, Scissors, Sparkles, Users } from "lucide-react";
 import { logoutAdmin } from "@/lib/actions/auth";
 
 const NAV_LINKS = [
@@ -7,6 +7,8 @@ const NAV_LINKS = [
   { href: "/admin/clients", label: "לקוחות", icon: Users },
   { href: "/admin/services", label: "טיפולים ומחירים", icon: Scissors },
   { href: "/admin/hours", label: "שעות פעילות", icon: Clock },
+  { href: "/admin/business", label: "פרטי העסק", icon: Building2 },
+  { href: "/admin/gallery", label: "גלריה", icon: Images },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

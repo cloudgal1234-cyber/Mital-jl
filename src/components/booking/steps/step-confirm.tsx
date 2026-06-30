@@ -8,15 +8,17 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { formatAgorot, formatDateHe, formatTimeHe } from "@/lib/utils";
 import { downloadIcsFile, getGoogleCalendarUrl } from "@/lib/calendar";
-import { BUSINESS, getGoogleMapsUrl, getWazeUrl } from "@/lib/business";
+import { getGoogleMapsUrl, getWazeUrl } from "@/lib/business";
 
 type SubmitResult = { success: true; appointmentId: string } | { success: false; error: string };
+type BusinessInfo = { name: string; address: string };
 
 export function StepConfirm({
   service,
   time,
   isPending,
   result,
+  businessInfo,
   onRestart,
   onBackToDateTime,
 }: {
@@ -24,6 +26,7 @@ export function StepConfirm({
   time: string;
   isPending: boolean;
   result: SubmitResult | null;
+  businessInfo: BusinessInfo;
   onRestart: () => void;
   onBackToDateTime: () => void;
 }) {
@@ -31,9 +34,9 @@ export function StepConfirm({
   const endDate = addMinutes(date, service.durationMin);
 
   const calendarEvent = {
-    title: `${service.name} – ${BUSINESS.name}`,
-    description: `תור ל${service.name} אצל ${BUSINESS.name}`,
-    location: BUSINESS.address,
+    title: `${service.name} – ${businessInfo.name}`,
+    description: `תור ל${service.name} אצל ${businessInfo.name}`,
+    location: businessInfo.address,
     start: date,
     end: endDate,
   };
@@ -87,12 +90,12 @@ export function StepConfirm({
               <p className="mb-1.5 text-xs font-medium text-muted-foreground">ניווט לסטודיו</p>
               <div className="flex flex-wrap justify-center gap-2">
                 <Button variant="outline" size="sm" asChild>
-                  <a href={getWazeUrl()} target="_blank" rel="noopener noreferrer">
+                  <a href={getWazeUrl(businessInfo.address)} target="_blank" rel="noopener noreferrer">
                     <Navigation className="h-4 w-4" /> Waze
                   </a>
                 </Button>
                 <Button variant="outline" size="sm" asChild>
-                  <a href={getGoogleMapsUrl()} target="_blank" rel="noopener noreferrer">
+                  <a href={getGoogleMapsUrl(businessInfo.address)} target="_blank" rel="noopener noreferrer">
                     <Navigation className="h-4 w-4" /> Google Maps
                   </a>
                 </Button>

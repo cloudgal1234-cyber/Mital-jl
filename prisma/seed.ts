@@ -65,6 +65,14 @@ const businessHours = [
   { weekday: 6, openTime: "00:00", closeTime: "00:00", isClosed: true },
 ];
 
+const businessInfo = {
+  id: "singleton",
+  name: "מיטל ג'ל",
+  address: "רחוב הדוגמה 12, תל אביב",
+  phone: "050-0000000",
+  instagram: "@mital.nails",
+};
+
 async function main() {
   for (const service of services) {
     await prisma.service.upsert({
@@ -81,6 +89,12 @@ async function main() {
       create: hours,
     });
   }
+
+  await prisma.businessInfo.upsert({
+    where: { id: businessInfo.id },
+    update: businessInfo,
+    create: businessInfo,
+  });
 
   console.log("Seed complete.");
 }
