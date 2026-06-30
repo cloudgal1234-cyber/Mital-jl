@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000">
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fdf9f4" />
+      <stop offset="55%" stop-color="#e3cd96" />
+      <stop offset="100%" stop-color="#f6d2da" />
+    </linearGradient>
+    <filter id="blur3"><feGaussianBlur stdDeviation="70" /></filter>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#bg3)" />
+  <g filter="url(#blur3)">
+  <circle cx="611" cy="441" r="279" fill="#e3cd96" opacity="0.35" />
+  <circle cx="922" cy="652" r="170" fill="#f6d2da" opacity="0.35" />
+  <circle cx="1233" cy="163" r="241" fill="#d8b78d" opacity="0.35" />
+  <circle cx="344" cy="374" r="132" fill="#e3cd96" opacity="0.35" />
+  </g>
+  <circle cx="213" cy="339" r="6" fill="#c9a961" opacity="0.15" />
+  <circle cx="310" cy="512" r="7" fill="#c9a961" opacity="0.2" />
+  <circle cx="407" cy="685" r="3" fill="#c9a961" opacity="0.25" />
+  <circle cx="504" cy="858" r="4" fill="#c9a961" opacity="0.30000000000000004" />
+  <circle cx="601" cy="31" r="5" fill="#c9a961" opacity="0.35" />
+  <circle cx="698" cy="204" r="6" fill="#c9a961" opacity="0.15" />
+  <circle cx="795" cy="377" r="7" fill="#c9a961" opacity="0.2" />
+  <circle cx="892" cy="550" r="3" fill="#c9a961" opacity="0.25" />
+  <circle cx="989" cy="723" r="4" fill="#c9a961" opacity="0.30000000000000004" />
+  <circle cx="1086" cy="896" r="5" fill="#c9a961" opacity="0.35" />
+  <circle cx="1183" cy="69" r="6" fill="#c9a961" opacity="0.15" />
+  <circle cx="1280" cy="242" r="7" fill="#c9a961" opacity="0.2" />
+  <circle cx="1377" cy="415" r="3" fill="#c9a961" opacity="0.25" />
+  <circle cx="1474" cy="588" r="4" fill="#c9a961" opacity="0.30000000000000004" />
+  <circle cx="1571" cy="761" r="5" fill="#c9a961" opacity="0.35" />
+  <circle cx="68" cy="934" r="6" fill="#c9a961" opacity="0.15" />
+  <circle cx="165" cy="107" r="7" fill="#c9a961" opacity="0.2" />
+  <circle cx="262" cy="280" r="3" fill="#c9a961" opacity="0.25" />
+  <g opacity="0.5">
+    <path d="M 760 560 C 760 460 840 380 940 380 C 1040 380 1120 460 1120 560 C 1120 660 1040 760 940 820 C 840 760 760 660 760 560 Z"
+      fill="none" stroke="#d8b78d" stroke-width="2" opacity="0.4" />
+  </g>
+</svg>

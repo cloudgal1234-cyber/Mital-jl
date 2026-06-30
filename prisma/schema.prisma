@@ -1,0 +1,111 @@
+// ============================================================================
+// Mital Nails — Database Schema
+//
+// The anti-double-booking guarantee is enforced in TWO independent layers:
+//
+//   1) APP LAYER  (src/lib/actions/booking.ts)
+//      A Postgres advisory lock + an explicit overlap query inside a
+//      transaction, so 99% of conflicts are caught early with a friendly
+//      error message and zero wasted round-trips.
+//
+//   2) DATABASE LAYER (this file + migration.sql)
+//      A GiST EXCLUDE constraint on a generated `tstzrange` column. This is
+//      the real safety net: Postgres itself will physically refuse to COMMIT
+//      two overlapping CONFIRMED/COMPLETED entries, even under concurrent
+//      transactions, multiple app server instances, or app-layer bugs.
+//      Prisma cannot express EXCLUDE constraints natively, so the exact DDL
+//      lives in prisma/migrations/0001_init/migration.sql — the `timeRange`
+//      field below is declared `Unsupported` purely so the column shows up
+//      in the Prisma Client types/docs.
+// ============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+}
+
+enum EntryType {
+  APPOINTMENT
+  BREAK
+  VACATION
+  BLOCKED
+}
+
+enum AppointmentStatus {
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  NO_SHOW
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  durationMin Int // treatment length in minutes — drives slot-grid + overlap math
+  priceAgorot Int // price stored in agorot (integer) to avoid float rounding bugs
+  icon        String? // lucide-react icon key, e.g. "sparkles"
+  category    String? // e.g. "מניקור", "פדיקור", "בניית ציפורניים"
+  colorTag    String   @default("#cf6a85") // used for calendar color-coding
+  active      Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  entries ScheduleEntry[]
+
+  @@index([active, sortOrder])
+}
+
+model Client {
+  id        String   @id @default(cuid())
+  fullName  String
+  phone     String   @unique
+  email     String?
+  notes     String? // free-text: allergies, preferences, internal remarks
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  entries ScheduleEntry[]
+
+  @@index([fullName])
+}
+
+model ScheduleEntry {
+  id     String            @id @default(cuid())
+  type   EntryType
+  status AppointmentStatus @default(CONFIRMED)
+
+  startTime DateTime
+  endTime   DateTime
+
+  /// Generated `tstzrange(startTime, endTime, '[)')` column, STORED.
+  /// Backed by a GiST EXCLUDE constraint (see migration.sql) that makes
+  /// overlapping CONFIRMED/COMPLETED entries impossible to commit.
+  timeRange Unsupported("tstzrange")?
+
+  clientId  String?
+  client    Client?  @relation(fields: [clientId], references: [id])
+  serviceId String?
+  service   Service? @relation(fields: [serviceId], references: [id])
+
+  notes     String? // e.g. reason for a manual block ("חופשה", "הפסקת צהריים")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([startTime, endTime])
+  @@index([clientId])
+  @@index([status])
+}
+
+model BusinessHours {
+  id        String @id @default(cuid())
+  weekday   Int    @unique // 0 = Sunday ... 6 = Saturday
+  openTime  String // "09:00"
+  closeTime String // "19:00"
+  isClosed  Boolean @default(false)
+}
