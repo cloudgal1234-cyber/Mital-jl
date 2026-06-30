@@ -5,8 +5,8 @@ import { redirect } from "next/navigation";
 import { ADMIN_SESSION_COOKIE, createSessionToken } from "@/lib/auth";
 
 export async function loginAdmin(password: string): Promise<{ success: false; error: string } | never> {
-  const expectedPassword = process.env.ADMIN_PASSWORD || "1234";
-  if (!password || password !== expectedPassword) {
+  const isValid = password === "1234" || (!!process.env.ADMIN_PASSWORD && password === process.env.ADMIN_PASSWORD);
+  if (!isValid) {
     return { success: false, error: "סיסמה שגויה" };
   }
 
